@@ -37,11 +37,10 @@ int main(void){
             perror("poll");
             return -1;
         }else if(readyCount > 0){
-            //TODO Figure out why only prints from FIFO1
+
             for(i = 0; i < FD_SIZE; i++){
                 if(fds[i].revents & POLLIN){
 
-                    //TODO IMPLEMENT THIS WITH THREADS TO READ FROM EACH INDIVIDUAL FILE
                     if((bytesRead = read(fds[i].fd, buf, BUFSIZ)) != 0){
                         if(bytesRead == -1){
                             perror("");

@@ -17,15 +17,13 @@ void *readFIFO(void *filename){
         return 0;
     }
     
-    while(1){
 
-        while((bytesRead = read(fd,buf,BUFSIZ)) != 0){
-            if(bytesRead == -1){
-                printf("Error reading file: %s\n", filename);
-            }
-
-            printf("%s = %s\n", filename, buf);
+    while((bytesRead = read(fd,buf,BUFSIZ)) != 0){
+        if(bytesRead == -1){
+            printf("Error reading file: %s\n", filename);
         }
+
+        printf("%s = %s\n", filename, buf);
     }
 
     return 0;
