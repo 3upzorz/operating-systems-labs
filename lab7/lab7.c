@@ -8,7 +8,7 @@
 int main(void){
 
     char *buf = malloc(BUFSIZ);
-    char **ibuf;
+    char **ibuf = malloc(sizeof(char *));
     char *token;
     int i;
     int readBytes;
@@ -27,7 +27,7 @@ int main(void){
         }
 
         i = 0;
-        ibuf = malloc(sizeof(char *));
+
         token = strtok(buf," \n");
         ibuf[i] = token;
 
@@ -43,14 +43,17 @@ int main(void){
                     token = strtok(NULL, " \n");
                     outputFile = token;
                 }else{
+                 
                     i++;
                     realloc(ibuf,sizeof(char *) * i);
                     ibuf[i] = token;
                 }
             }
-            
         }
-
+        i++;
+        realloc(ibuf,sizeof(char *) * i);
+        ibuf[i] = 0;
+        
         if((pid = fork()) == -1){
             perror("Fork error");
             return -1;
@@ -74,7 +77,7 @@ int main(void){
 
             if(outputFile != NULL){
                 close(1);
-                if((ofd = open(outputFile, O_WRONLY|O_CREAT)) == -1){
+                if((ofd = creat(outputFile, 0666)) == -1){
                     perror("Output file error");
                     close(ifd);
                     return -1;
@@ -95,8 +98,9 @@ int main(void){
             return 0;
         }
 
-        free(buf);
-        buf = malloc(BUFSIZ);
+        inputFile = NULL;
+        outputFile = NULL;
+        memset(buf,0,BUFSIZ);
         write(1,">",sizeof(char)); 
     }
 
